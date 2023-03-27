@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  bdd:
+
+    container_name : mysql
+    image : mysql
+    environment:
+      MYSQL_ROOT_PASSWORD : enieni
+      MYSQL_DATABASE : sortirdb
+
+    expose :
+      - "3306"
+    ports :
+      - "3306:3306"
+    volumes :
+      - bdd-data:/var/lib/mysql
+
+volumes :
+  bdd-data :
