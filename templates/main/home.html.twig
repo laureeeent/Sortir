@@ -3,6 +3,14 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
-<h3>BIENVENUE A LA MAISON CONNARD</h3>
-    <h6>:]</h6>
+    {% if app.user %}
+        <p><a href="{{ path('app_logout') }}">Se déconnecter</a></p>
+        <h3>BIENVENUE A LA MAISON {{ app.user.username }}</h3>
+    {% else %}
+        <nav>
+            <p><a href="{{ path('app_register') }}">S'inscrire</a></p>
+            <p><a href="{{ path('app_login') }}">Se connecter</a></p>
+        </nav>
+    {% endif %}
+
 {% endblock %}
