@@ -17,7 +17,11 @@ class ParticipantType extends AbstractType
     {
         $builder
             ->add('username')
+            ->add('prenom')
+            ->add('nom')
+            ->add('telephone')
             ->add('email')
+            ->add('campus')
             ->add('roles')
             ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
