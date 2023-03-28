@@ -8,8 +8,10 @@ use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -30,17 +32,16 @@ class SortieController extends AbstractController
     }
 
 
-    #[Route('/ajouter/{participant}', name: 'sortie_ajouter')]
+    #[Route('/ajouter', name: 'sortie_ajouter')]
     public function ajouter (
-        Participant            $participant,
         Request                $request,
         EntityManagerInterface $entityManager,
         EtatRepository         $etatRepository
     ): Response
     {
         $sortie = new Sortie();
-
-        $etatCree = $etatRepository->findBy(['libelle' => 'Créée']);
+        $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
+        $etatCree = $etatRepository->findOneBy(['libelle' => 'Créée']);
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
@@ -48,10 +49,11 @@ class SortieController extends AbstractController
                 $sortie->setEtat($etatCree);
                 $dateLI = $sortieForm->get('dateLimiteInscription');
                 $dateDebut = $sortieForm->get('dateHeureDebut');
-                if ($dateLI > $dateDebut || new \DateTime('now') > $dateLI) {
-                    $this->addFlash('echec', 'La date de début de sortie doit être supérieur à la date d\'inscription');
-                    return $this->redirectToRoute('sortie_ajouter');
-                }
+                $now = new DateTime('now');
+//                if ( $now > $dateLI || $dateLI > $dateDebut) {
+//                    $this->addFlash('echec', 'La date de début de sortie doit être supérieur à la date d\'inscription');
+//                    return $this->redirectToRoute('sortie_ajouter');
+//                }
 
                 $sortie->setOrganisateur($participant);
                 $sortie->setCampusOrganisateur($participant->getCampus());
@@ -62,6 +64,7 @@ class SortieController extends AbstractController
             }
             catch (\Exception $exception) {
                 $this->addFlash('echec', 'La sortie n\'a pas été insérée');
+                //changer la route et remettre '/'
                 return $this->redirectToRoute('main_home');
             }
         }
@@ -69,7 +72,6 @@ class SortieController extends AbstractController
             compact('sortieForm')
           );
     }
-
 
     #[Route('/detail/{sortie}', name: 'sortir_detail')]
     public function detail(
@@ -80,6 +82,6 @@ class SortieController extends AbstractController
 
         return $this->render('sortir/detail.html.twig',
             compact("sortie")
-
-
+        );
+    }
 }
