@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        {% for sortie in sorties %}
+            <li>{{ sortie.nom }} , durée : , date limite d'inscription : {{ sortie.dateLimiteInscription | date("Y-m-d") }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
