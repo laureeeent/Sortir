@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -21,8 +23,11 @@ class ParticipantType extends AbstractType
             ->add('nom')
             ->add('telephone')
             ->add('email')
-            ->add('campus')
-            ->add('roles')
+            ->add('campus', EntityType::class,
+            [
+                'class' =>Campus::class,
+                'choice_label' => 'nom'
+            ])
             ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller

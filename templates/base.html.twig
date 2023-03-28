@@ -15,7 +15,11 @@
     </head>
     <body>
         <h1>Sortir.com</h1>
-
+        <nav>
+            {% if app.user %}
+                <a href="{{ path('app_profil', {'participant' : app.user.id }) }}">Mon profil</a>
+            {% endif %}
+        </nav>
         {% block body %}{% endblock %}
     </body>
 </html>
