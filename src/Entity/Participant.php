@@ -19,6 +19,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    /*
+     * @UniqueEntity
+     *
+     * */
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 

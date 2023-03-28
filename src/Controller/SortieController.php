@@ -40,7 +40,7 @@ class SortieController extends AbstractController
     {
         $sortie = new Sortie();
 
-        $etatCree = $etatRepository->findBy(['libelle' => 'Créée']);
+        $etatCree = $etatRepository->findOneBy(['libelle' => 'Créée']);
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
@@ -82,4 +82,6 @@ class SortieController extends AbstractController
             compact("sortie")
         );
     }
+
+
 }
