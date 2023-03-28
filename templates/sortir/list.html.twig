@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        {% for sortie in sorties %}
+            <li><a href="{{ path('sortir_detail', {'sortie' : sortie.id}) }}">{{ sortie.nom }}</a> , durée : {{ sortie.duree | date('H:i:s') }}, date limite d'inscription : {{ sortie.dateLimiteInscription | date("Y-m-d") }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
