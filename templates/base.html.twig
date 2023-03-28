@@ -16,7 +16,8 @@
     </head>
     <body>
         <header>
-            <img src="{{ asset('img/sortir.png') }}">
+
+            <a href="{{ path('sortir_list') }}"><img src="{{ asset('img/sortir.png') }}"></a>
 
             <nav>
                 {% if app.user %}
