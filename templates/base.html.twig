@@ -17,7 +17,11 @@
         <h1>Sortir.com</h1>
         <nav>
             {% if app.user %}
-                <a href="{{ path('app_profil', {'participant' : app.user.id }) }}">Mon profil</a>
+                <p><a href="{{ path('sortir_list') }}">Accueil</a></p>
+                <p><a href="{{ path('app_logout') }}">Se déconnecter</a></p>
+                <p><a href="{{ path('app_profil', {'participant' : app.user.id }) }}">Mon profil</a></p>
+
+                <p><a href="{{ path('sortie_ajouter', {'participant' : app.user.id } ) }}">Ajouter une sortie</a></p>
             {% endif %}
         </nav>
         {% block body %}{% endblock %}

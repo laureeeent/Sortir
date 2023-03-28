@@ -80,6 +80,6 @@ class SortieController extends AbstractController
 
         return $this->render('sortir/detail.html.twig',
             compact("sortie")
-
-
+        );
+    }
 }
