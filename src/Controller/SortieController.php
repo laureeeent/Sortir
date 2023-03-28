@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,18 @@ class SortieController extends AbstractController
         $sorties = $sortieRepository->findAll();
         return $this->render('sortir/list.html.twig',
             compact("sorties")
+        );
+    }
+
+    #[Route('/detail/{sortie}', name: 'sortir_detail')]
+    public function detail(
+        Sortie $sortie,
+        SortieRepository $sortieRepository
+    ): Response
+    {
+
+        return $this->render('sortir/detail.html.twig',
+            compact("sortie")
         );
     }
 }
