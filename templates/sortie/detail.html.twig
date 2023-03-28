@@ -16,4 +16,10 @@
     <div>Durée estimée : {{ sortie.duree | date('H:i:s') }}, date limite d'inscription : {{ sortie.dateLimiteInscription | date('d/m/y H:i') }} </div> <br>
     <div>Nombre de participants max : {{ sortie.nbInscriptionMax }}</div>
 
+    <div><nav>
+            {% for participant in participants %}
+                <p>{{ participant.nom }}</p>
+            {% endfor %}
+        </nav></div>
+
 {% endblock %}

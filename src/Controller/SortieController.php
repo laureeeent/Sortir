@@ -11,7 +11,7 @@ use App\Repository\SortieRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Debug\Debug;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -20,13 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[Route('/list', name: 'sortir_list')]
+    #[Route('/list', name: 'sortie_list')]
     public function list(
         SortieRepository $sortieRepository
     ): Response
     {
         $sorties = $sortieRepository->findAll();
-        return $this->render('sortir/list.html.twig',
+        return $this->render('sortie/list.html.twig',
             compact("sorties")
         );
     }
@@ -61,12 +61,12 @@ class SortieController extends AbstractController
                 $entityManager->persist($sortie);
                 $entityManager->flush();
                 $this->addFlash('succes', 'La sortie a bien été insérée');
-                return $this->redirectToRoute('sortir_list');
+                return $this->redirectToRoute('sortie_list');
             }
             catch (\Exception $exception) {
                 $this->addFlash('echec', 'La sortie n\'a pas été insérée');
                 //changer la route et remettre '/'
-                return $this->redirectToRoute('main_home');
+                return $this->redirectToRoute('sortie_ajouter');
             }
         }
         return $this->render('sortie/ajouter.html.twig',
@@ -80,9 +80,9 @@ class SortieController extends AbstractController
         SortieRepository $sortieRepository
     ): Response
     {
-
-        return $this->render('sortir/detail.html.twig',
-            compact("sortie")
+        $participants = $sortie->getParticipants();
+        return $this->render('sortie/detail.html.twig',
+            compact("sortie", "participants")
         );
     }
 
