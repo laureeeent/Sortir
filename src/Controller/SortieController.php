@@ -40,6 +40,7 @@ class SortieController extends AbstractController
     ): Response
     {
         $sortie = new Sortie();
+
         $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
         $etatCree = $etatRepository->findOneBy(['libelle' => 'Créée']);
         $sortieForm = $this->createForm(SortieType::class, $sortie);
@@ -84,4 +85,6 @@ class SortieController extends AbstractController
             compact("sortie")
         );
     }
+
+
 }
