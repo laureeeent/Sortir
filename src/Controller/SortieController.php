@@ -74,17 +74,42 @@ class SortieController extends AbstractController
           );
     }
 
-    #[Route('/detail/{sortie}', name: 'sortir_detail')]
+    #[Route('/detail/{sortie}', name: 'sortie_detail')]
     public function detail(
         Sortie $sortie,
         SortieRepository $sortieRepository
     ): Response
     {
         $participants = $sortie->getParticipants();
+        $nbParticipants = $participants->count();
         return $this->render('sortie/detail.html.twig',
-            compact("sortie", "participants")
+            compact("sortie", "participants", "nbParticipants")
         );
     }
+
+    #[Route('/inscription/{sortie}/', name: 'sortie_inscription')]
+    public function inscription(
+        Sortie $sortie,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        if ($this->getUser() != null && ($sortie->getParticipants()->count() < $sortie->getNbInscriptionMax())) {
+            $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
+            $sortie->addParticipant($participant);
+            $participant->addSortie($sortie);
+            $entityManager->persist($sortie);
+            $entityManager->persist($participant);
+            $entityManager->flush();
+            return $this->redirectToRoute('sortie_list');
+        }
+        else {
+            $this->addFlash('echec', 'Vous n\'avez pas été inscrit à la sortie.');
+            return $this->redirectToRoute('sortie_list');
+        }
+
+    }
+
+
 
 
 }
