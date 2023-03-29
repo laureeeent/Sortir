@@ -17,14 +17,14 @@
     <body>
         <header>
 
-            <a href="{{ path('sortir_list') }}"><img src="{{ asset('img/sortir.png') }}" alt=""></a>
+            <a href="{{ path('sortie_list') }}"><img src="{{ asset('img/sortir.png') }}" alt=""></a>
 
             <nav>
                 {% if app.user %}
                     <div id="barrenav">
                         <ul>
 
-                            <li><a href="{{ path('sortir_list') }}">Accueil</a></li>
+                            <li><a href="{{ path('sortie_list') }}">Accueil</a></li>
                             <li><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
                             <li><a href="{{ path('app_profil', {'participant' : app.user.id }) }}">Mon profil</a></li>
 

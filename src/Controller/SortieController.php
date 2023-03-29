@@ -20,13 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[Route('/list', name: 'sortir_list')]
+    #[Route('/list', name: 'sortie_list')]
     public function list(
         SortieRepository $sortieRepository
     ): Response
     {
         $sorties = $sortieRepository->findAll();
-        return $this->render('sortir/list.html.twig',
+        return $this->render('sortie/list.html.twig',
             compact("sorties")
         );
     }
@@ -61,12 +61,12 @@ class SortieController extends AbstractController
                 $entityManager->persist($sortie);
                 $entityManager->flush();
                 $this->addFlash('succes', 'La sortie a bien été insérée');
-                return $this->redirectToRoute('sortir_list');
+                return $this->redirectToRoute('sortie_list');
             }
             catch (\Exception $exception) {
                 $this->addFlash('echec', 'La sortie n\'a pas été insérée');
                 //changer la route et remettre '/'
-                return $this->redirectToRoute('sortir_list');
+                return $this->redirectToRoute('sortie_list');
             }
         }
         return $this->render('sortie/ajouter.html.twig',
@@ -74,7 +74,7 @@ class SortieController extends AbstractController
           );
     }
 
-    #[Route('/detail/{sortie}', name: 'sortir_detail')]
+    #[Route('/detail/{sortie}', name: 'sortie_detail')]
     public function detail(
         Sortie $sortie,
         SortieRepository $sortieRepository
