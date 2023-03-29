@@ -51,4 +51,19 @@ class ParticipantController extends AbstractController
             compact('participantForm')
         );
     }
+
+    #[Route(
+        '/affichage/{id}',
+        name: 'app_afficher_profil'
+    )]
+    public function afficherProfil(
+        Participant $id,
+
+    ): Response
+    {
+
+        return $this->render('participant/afficherprofil.html.twig',
+            compact('id')
+        );
+    }
 }

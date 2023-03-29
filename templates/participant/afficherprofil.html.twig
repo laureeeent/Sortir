@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<p>Prenom :  {{ id.prenom }}</p>
+<p>Nom :  {{ id.nom }}</p>
+<p>Telephone :  {{ id.telephone }}</p>
+<p>Email :  {{ id.email }}</p>
+<p>Campus :  {{ id.campus.nom }}</p>
+
+    <button><a href="{{ path('sortie_list') }}" style="text-decoration: none">Retour</a></button>
+{% endblock %}
+
