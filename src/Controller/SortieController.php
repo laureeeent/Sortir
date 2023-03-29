@@ -82,19 +82,26 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        if ($this->getUser() != null && ($sortie->getParticipants()->count() < $sortie->getNbInscriptionMax())) {
-            $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
-            $sortie->addParticipant($participant);
-            $participant->addSortie($sortie);
-            $entityManager->persist($sortie);
-            $entityManager->persist($participant);
-            $entityManager->flush();
-            return $this->redirectToRoute('sortie_list');
+        if ($sortie->getEtat()->getId() === 2) {
+            if ($this->getUser() != null && ($sortie->getParticipants()->count() < $sortie->getNbInscriptionMax())) {
+                $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
+                $sortie->addParticipant($participant);
+                $participant->addSortie($sortie);
+                $entityManager->persist($sortie);
+                $entityManager->persist($participant);
+                $entityManager->flush();
+                return $this->redirectToRoute('sortie_list');
+            }
+            else {
+                $this->addFlash('echec', 'Vous n\'avez pas été inscrit à la sortie.');
+                return $this->redirectToRoute('sortie_list');
+            }
         }
         else {
-            $this->addFlash('echec', 'Vous n\'avez pas été inscrit à la sortie.');
+            $this->addFlash('echec', 'Vous ne pouvez pas vous inscrire à une sortie dont la période d\'inscription est terminée.');
             return $this->redirectToRoute('sortie_list');
         }
+
 
     }
 }
