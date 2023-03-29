@@ -60,6 +60,10 @@ class  Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Lieu $lieu = null;
 
+    #[ORM\ManyToOne(inversedBy: 'sorties')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ville $ville = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -234,5 +238,17 @@ class  Sortie
                 ->atPath('dateHeureDebut')
                 ->addViolation();
         }
+    }
+
+    public function getVille(): ?Ville
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
     }
 }
