@@ -66,7 +66,7 @@ class SortieController extends AbstractController
             catch (\Exception $exception) {
                 $this->addFlash('echec', 'La sortie n\'a pas été insérée');
                 //changer la route et remettre '/'
-                return $this->redirectToRoute('main_home');
+                return $this->redirectToRoute('sortir_list');
             }
         }
         return $this->render('sortie/ajouter.html.twig',

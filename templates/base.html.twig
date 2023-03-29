@@ -21,11 +21,17 @@
 
             <nav>
                 {% if app.user %}
-                    <p><a href="{{ path('sortir_list') }}">Accueil</a></p>
-                    <p><a href="{{ path('app_logout') }}">Se déconnecter</a></p>
-                    <p><a href="{{ path('app_profil', {'participant' : app.user.id }) }}">Mon profil</a></p>
+                    <div id="barrenav">
+                        <ul>
 
-                    <p><a href="{{ path('sortie_ajouter', {'participant' : app.user.id } ) }}">Ajouter une sortie</a></p>
+                            <li><a href="{{ path('sortir_list') }}">Accueil</a></li>
+                            <li><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
+                            <li><a href="{{ path('app_profil', {'participant' : app.user.id }) }}">Mon profil</a></li>
+
+                            <li><a href="{{ path('sortie_ajouter', {'participant' : app.user.id } ) }}">Ajouter une sortie</a></li>
+
+                        </ul>
+                    </div>
                 {% endif %}
             </nav>
             {% block body %}{% endblock %}
