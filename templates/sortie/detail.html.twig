@@ -31,5 +31,6 @@
             {% endfor %}
         </nav>
     {% endif %}
+    <button><a href="{{ path("sortie_inscription", {"sortie" : sortie.id}) }}" style="text-decoration: none">s'inscrire à la sortie</a></button>
 {% endblock %}
 
