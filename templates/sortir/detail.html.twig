@@ -7,14 +7,17 @@
 {% block body %}
     <h1>{{ sortie.nom }}</h1>
     <p>Organisé par {{ sortie.organisateur.username }}, du campus de {{ sortie.campusOrganisateur.nom }}</p>
-    <div>Informations : {{ sortie.infosSortie }}</div> <br>
+    <div>Description et infos : {{ sortie.infosSortie }}</div> <br>
     {% if sortie.dateHeureDebut is not null%}
         <div>Sortie prévue le {{ sortie.dateHeureDebut | date('d/m/y H:i') }}</div> <br>
     {% else %}
         <div>La date de sortie n'est pas encore fixée.</div><br>
     {% endif %}
     <div>Durée estimée : {{ sortie.duree | date('H:i:s') }}, date limite d'inscription : {{ sortie.dateLimiteInscription | date('d/m/y H:i') }} </div> <br>
-    <div>Nombre de participants max : {{ sortie.nbInscriptionMax }}</div>
+    <div>Nombre de participants max : {{ sortie.nbInscriptionMax }}</div><br>
+    <div>Lieu : {{ sortie.lieu.nom }}, {{ sortie.lieu.rue }}</div><br>
+    <div>Ville : {{ sortie.lieu.ville.nom }}, {{ sortie.lieu.ville.codePostal }}</div><br>
+    <div>Latitude : {{ sortie.lieu.latitude }}°, longitude : {{ sortie.lieu.longitude }}°</div>
 
 
     <p>Participants : </p>
