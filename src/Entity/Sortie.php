@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class  Sortie
@@ -19,13 +21,17 @@ class  Sortie
     #[ORM\Column(length: 200)]
     private ?string $nom = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotNull(message : "Désolé, la date et l'heure de début doivent être renseignées."
+    )]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $duree = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotNull(message : "Désolé, la date limite d'inscription doit être renseignée."
+    )]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column]
@@ -207,5 +213,26 @@ class  Sortie
         $this->lieu = $lieu;
 
         return $this;
+    }
+    #[Assert\Callback()]
+    public function isDateInscriptionValid(ExecutionContextInterface $context):void{
+        $now = new \DateTime('now');
+
+        if ($now > $this->dateLimiteInscription) {
+            $context
+            ->buildViolation('La date limite d\'inscription doit être postérieure à aujourd\'hui.')
+            ->atPath('dateLimiteInscription')
+            ->addViolation();
+        }
+    }
+    #[Assert\Callback()]
+    public function isDateDebutValid(ExecutionContextInterface $context):void {
+
+        if ($this->dateLimiteInscription > $this->dateHeureDebut) {
+            $context
+                ->buildViolation('La date de sortie doit être postérieure à la date limite d\'inscription.')
+                ->atPath('dateHeureDebut')
+                ->addViolation();
+        }
     }
 }

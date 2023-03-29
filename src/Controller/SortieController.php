@@ -2,18 +2,14 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -48,13 +44,6 @@ class SortieController extends AbstractController
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             try {
                 $sortie->setEtat($etatCree);
-                $dateLI = $sortieForm->get('dateLimiteInscription');
-                $dateDebut = $sortieForm->get('dateHeureDebut');
-                $now = new DateTime('now');
-//                if ( $now > $dateLI || $dateLI > $dateDebut) {
-//                    $this->addFlash('echec', 'La date de début de sortie doit être supérieur à la date d\'inscription');
-//                    return $this->redirectToRoute('sortie_ajouter');
-//                }
 
                 $sortie->setOrganisateur($participant);
                 $sortie->setCampusOrganisateur($participant->getCampus());
@@ -71,7 +60,7 @@ class SortieController extends AbstractController
         }
         return $this->render('sortie/ajouter.html.twig',
             compact('sortieForm')
-          );
+        );
     }
 
     #[Route('/detail/{sortie}', name: 'sortie_detail')]
