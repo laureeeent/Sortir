@@ -3,8 +3,10 @@
 {% block body %}
     <ul>
         {% for sortie in sorties %}
-            <li><a href="{{ path('sortie_detail', {'sortie' : sortie.id}) }}" style="text-decoration: none">{{ sortie.nom }} </a> , durée : {{ sortie.duree | date('H:i:s') }}, date limite d'inscription : {{ sortie.dateLimiteInscription | date("d-m-Y-H-i-s") }}
-            <button><a href="{{ path("sortie_inscription", {"sortie" : sortie.id}) }}" style="text-decoration: none">s'inscrire</a></button></li>
+            <li><a href="{{ path('sortie_detail', {'sortie' : sortie.id}) }}" style="text-decoration: none">{{ sortie.nom }} </a> ,
+                durée : {{ sortie.duree | date('H:i:s') }}, date limite d'inscription : {{ sortie.dateLimiteInscription | date("d-m-Y-H-i-s") }}, statut : {{ sortie.etat.libelle }}
+            <button><a href="{{ path("sortie_inscription", {"sortie" : sortie.id}) }}" style="text-decoration: none">s'inscrire</a></button>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}
