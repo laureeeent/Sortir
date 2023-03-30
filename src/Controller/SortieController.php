@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -104,4 +107,25 @@ class SortieController extends AbstractController
 
 
     }
+
+    #[Route('/get/lieux/{ville}', name: 'sortie_getville')]
+    public function getLieuxVille(
+        Ville           $ville,
+        VilleRepository  $villeRepository,
+        SortieRepository $sortieRepository
+    ): Response
+    {
+
+        $lieux = $ville->getLieux();
+        $lieuxArr = array();
+
+        foreach ($lieux as $lieu) {
+            $lieuxArr[] = array(
+                "id" => $lieu->getId(),
+                "nom" => $lieu->getNom()
+            );
+        }
+        return new JsonResponse($lieuxArr);
+    }
+
 }
