@@ -5,7 +5,71 @@
     {{ form_widget(sortieForm) }}
     <button>Envoyer</button>
     {{ form_end(sortieForm) }}
+
+    <script>
+
+
+        $('#sortie_ville').change(function () {
+            let idVille = document.getElementById('sortie_ville').value;
+            let adresse = "/sortie/get/lieux/" + idVille;
+
+            $.ajax({
+                type: "GET",
+                url: adresse,
+                dataType: "json",
+                success: function (response) {
+                    //1er for pour supprimer toutes les options
+                    //monLieuxSelect.remove('');
+                    // for (let i = 0; i < $('#sortie_lieu option').length; i++) {
+                    //     $("#sortie_lieu option[value="+i+"]").remove();
+                    // }
+                    var lieuSelect = $("#sortie_lieu").html('');
+                    lieuSelect.append("")
+
+                    for (let i = 0; i < response.length; i++) {
+                        //let balLieu = document.createElement('option');
+                        let textLieu = "<option value="+response[i]["id"]+">"
+                        +response[i]["nom"]+"</option>";
+                        //balLieu.innerText = response[i]["nom"];
+                        //balLieu.value = response[i]["id"];
+                        lieuSelect.append(textLieu);
+                    }
+                }
+            });
+        });
+
+            /*function getLieuVille() {
+                let idVille = monVilleSelect.value;
+                let adresse = "/sortie/get/lieux/" + idVille;
+                let monLieuxSelect = $('sortie_lieu');
+                let reponse = null;
+                $.ajax({
+                    type: "GET",
+                    url: adresse,
+                    dataType: "json",
+                    success: function (response) {
+                        //1er for pour supprimer toutes les options
+                        monLieuxSelect.remove('');
+                        for (let i = 0; i < response.length; i++) {
+                            let balLieu = document.createElement('option');
+                            balLieu.innerText = response[i]["nom"];
+                            balLieu.value = response[i]["id"];
+                            monLieuxSelect.add(balLieu);
+                        }
+                    }
+                });*/
+                // fetch(adresse)
+                //     .then(reponse => reponse.json());
+                // console.log(reponse);
+            //}
+
+
+        //monVilleSelect.addEventListener("change", getLieuVille());
+
+
+    </script>
 {% endblock %}
+
 
 {% block title %}
 
