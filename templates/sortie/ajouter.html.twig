@@ -7,24 +7,32 @@
     {{ form_end(sortieForm) }}
 
     <script>
-        let monVilleSelect = document.getElementById('sortie_ville');
-        let monLieuSelect = document.getElementById('sortie_lieu');
+
+
         $('#sortie_ville').change(function () {
-            let idVille = monVilleSelect.value;
+            let idVille = document.getElementById('sortie_ville').value;
             let adresse = "/sortie/get/lieux/" + idVille;
-            let monLieuxSelect = $('sortie_lieu');
+
             $.ajax({
                 type: "GET",
                 url: adresse,
                 dataType: "json",
                 success: function (response) {
                     //1er for pour supprimer toutes les options
-                    monLieuxSelect.remove('');
+                    //monLieuxSelect.remove('');
+                    // for (let i = 0; i < $('#sortie_lieu option').length; i++) {
+                    //     $("#sortie_lieu option[value="+i+"]").remove();
+                    // }
+                    var lieuSelect = $("#sortie_lieu").html('');
+                    lieuSelect.append("")
+
                     for (let i = 0; i < response.length; i++) {
-                        let balLieu = document.createElement('option');
-                        balLieu.innerText = response[i]["nom"];
-                        balLieu.value = response[i]["id"];
-                        monLieuxSelect.add(balLieu);
+                        //let balLieu = document.createElement('option');
+                        let textLieu = "<option value="+response[i]["id"]+">"
+                        +response[i]["nom"]+"</option>";
+                        //balLieu.innerText = response[i]["nom"];
+                        //balLieu.value = response[i]["id"];
+                        lieuSelect.append(textLieu);
                     }
                 }
             });
