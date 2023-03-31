@@ -17,6 +17,15 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+        # indique a doctrine l'existence du filtre
+#        entity_managers:
+#            my_manager:
+#                filters:
+#                    published_post_filter:
+#                        class: App\filter\sortieFilter
+#                        enabled:  true
+
+
 when@test:
     doctrine:
         dbal:
