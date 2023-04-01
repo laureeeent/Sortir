@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\RechercheSortie;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,17 @@ class SortieRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+
+    public function findSearch(RechercheSortie $rechercheSortie): array {
+        $query = $this
+            ->createQueryBuilder('s')
+            ->leftjoin("s.participants", "participants")
+            ->getQuery()
+            ->getResult();
+
+        return $query;
     }
 
 //    /**

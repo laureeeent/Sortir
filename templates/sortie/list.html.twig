@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {{ form_start(rechercheForm) }}
+    {{ form_widget(rechercheForm) }}
+        <button>Rechercher</button>
+    {{ form_end(rechercheForm) }}
     <ul>
         {% for sortie in sorties %}
             <li><a href="{{ path('sortie_detail', {'sortie' : sortie.id}) }}" style="text-decoration: none">{{ sortie.nom }} </a> ,
@@ -9,6 +13,7 @@
             </li>
         {% endfor %}
     </ul>
+
 {% endblock %}
 
 {% block title %}

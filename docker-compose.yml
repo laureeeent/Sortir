@@ -9,6 +9,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD : enieni
       MYSQL_DATABASE : sortirdb
+      TZ : Europe/Paris
 
     expose :
       - "3306"
