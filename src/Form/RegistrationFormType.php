@@ -27,6 +27,7 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class)
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
+                'placeholder' => "Pas de campus spécifique...",
                 'choice_label' => 'nom',
             ])
             ->add('agreeTerms', CheckboxType::class, [

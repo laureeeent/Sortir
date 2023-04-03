@@ -59,7 +59,6 @@ class SortieController extends AbstractController
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             try {
                 $sortie->setEtat($etatCree);
-
                 $sortie->setOrganisateur($participant);
                 $sortie->setCampusOrganisateur($participant->getCampus());
                 $entityManager->persist($sortie);
@@ -73,6 +72,7 @@ class SortieController extends AbstractController
                 return $this->redirectToRoute('sortie_list');
             }
         }
+
         return $this->render('sortie/ajouter.html.twig',
             compact('sortieForm')
         );

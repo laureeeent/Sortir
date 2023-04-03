@@ -19,18 +19,20 @@ class RechercheSortieType extends AbstractType
         $builder
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
-                'choice_label' => 'nom'
+                'choice_label' => 'nom',
+                'placeholder' => "Tout les campus",
+                'required' => false
             ])
             ->add("nomSortieContient")
             ->add("dateAPartirDe", DateTimeType::class, [
-                'label'=>'Entre ',
+                'label'=>'A partir du ',
                 'html5' => true,
                 'widget' => 'single_text',
                 'mapped' => true,
                 'required'=>false,
             ])
             ->add("dateJusquA", DateTimeType::class, [
-                'label'=>'Entre ',
+                'label'=>"Jusqu'au ",
                 'html5' => true,
                 'widget' => 'single_text',
                 'mapped' => true,
