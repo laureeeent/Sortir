@@ -20,6 +20,9 @@ class RechercheSortie
 
     private ?bool $sortiePassee = false;
 
+    private ?Participant $participant = null;
+
+
     /**
      * @return Campus|null
      */
@@ -147,6 +150,24 @@ class RechercheSortie
     {
         $this->sortiePassee = $sortiePassee;
     }
+
+    /**
+     * @return Participant|null
+     */
+    public function getParticipant(): ?Participant
+    {
+        return $this->participant;
+    }
+
+    /**
+     * @param Participant|null $participant
+     */
+    public function setParticipant(?Participant $participant): void
+    {
+        $this->participant = $participant;
+    }
+
+
 
 
 }

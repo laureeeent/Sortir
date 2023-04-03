@@ -17,10 +17,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
+    #[IsGranted('ROLE_USER')]
     #[Route('/list', name: 'sortie_list')]
     public function list(
         Request $request,
@@ -31,6 +33,7 @@ class SortieController extends AbstractController
         $rechercheSortie = new RechercheSortie();
         $rechercheForm = $this->createForm(RechercheSortieType::class, $rechercheSortie);
         $rechercheForm->handleRequest($request);
+        $rechercheSortie->setParticipant($this->getUser());
         $sorties = $sortieRepository->findSearch($rechercheSortie);
         return $this->render('sortie/list.html.twig',
             compact("rechercheForm", "sorties")
