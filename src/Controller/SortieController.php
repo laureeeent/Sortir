@@ -108,6 +108,38 @@ class SortieController extends AbstractController
 
     }
 
+
+
+    #[Route('/desistement/{sortie}/', name: 'sortie_desistement')]
+    public function desistement(
+        Sortie $sortie,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        if ($sortie->getEtat()->getId() === 2) {
+           // if ($this->getUser()  ) {
+                $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
+                $sortie->removeParticipant($participant);
+                $participant->removeSortie($sortie);
+                $entityManager->persist($sortie);
+                $entityManager->persist($participant);
+                $entityManager->flush();
+                return $this->redirectToRoute('sortie_list');
+          /*  }
+            else {
+                $this->addFlash('echec', 'Vous n\'avez pas pu vous désister de la sortie.');
+                return $this->redirectToRoute('sortie_list');*/
+         //   }
+        }
+        else {
+            $this->addFlash('echec', 'Vous ne pouvez pas vous désister à une sortie dont la période d\'inscription est terminée.');
+            return $this->redirectToRoute('sortie_list');
+        }
+
+
+    }
+
+
     #[Route('/get/lieux/{ville}', name: 'sortie_getville')]
     public function getLieuxVille(
         Ville           $ville,
