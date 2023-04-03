@@ -4,7 +4,7 @@ namespace App\Entity;
 
 class RechercheSortie
 {
-    private ?Campus $campus;
+    private ?Campus $campus = null;
 
     private ?string $nomSortieContient = null;
 

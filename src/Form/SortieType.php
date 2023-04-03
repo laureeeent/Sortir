@@ -66,7 +66,7 @@ class SortieType extends AbstractType
             'required' => true,
             'placeholder' => 'Veuillez choisir un lieu ...',
             'class' => Lieu::class,
-            'choices' => $lieux
+            'choice_label' => 'nom'
         ]);
     }
 
