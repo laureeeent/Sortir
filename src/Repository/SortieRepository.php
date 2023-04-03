@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\RechercheSortie;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,67 @@ class SortieRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+
+    public function findSearch(RechercheSortie $rechercheSortie): array {
+
+        $query = $this
+            ->createQueryBuilder('s')
+            ->leftjoin("s.participants", "participants")
+            ->innerJoin("s.etat", "etat")
+            ;
+
+
+//        if (!empty($rechercheSortie->getCampus())) {
+//            $query = $query
+//                ->andWhere('s.campusOrganisateur LIKE :c')
+//                ->setParameter('c', $rechercheSortie->getCampus());
+//        }
+//
+//        if (!empty($rechercheSortie->getNomSortieContient())) {
+//            $query = $query
+//                ->andWhere("s.nom LIKE %:nsc%")
+//                ->setParameter("nsc", $rechercheSortie->getNomSortieContient());
+//        }
+//
+//        if (!(empty($rechercheSortie->getDateAPartirDe())) && !(empty($rechercheSortie->getDateJusquA()))) {
+//            $query = $query
+//                ->andWhere("s.dateHeureDebut BETWEEN :dapd AND :djqa")
+//                ->setParameter("dapd", $rechercheSortie->getDateAPartirDe())
+//                ->setParameter("djqa", $rechercheSortie->getDateJusquA());
+//        }
+//        else if(!(empty($rechercheSortie->getDateAPartirDe()))) {
+//            $query = $query
+//                ->andWhere("s.dateHeureDebut => :dapd")
+//                ->setParameter("dapd", $rechercheSortie->getDateAPartirDe());
+//        }
+//        else if (!(empty($rechercheSortie->getDateJusquA()))) {
+//            $query = $query
+//                ->andWhere("s.dateHeureDebut <= :djqa")
+//                ->setParameter("djqa", $rechercheSortie->getDateJusquA());
+//        }
+//
+//        if ($rechercheSortie->getIsOrganisateur() === true) {
+//            $query = $query
+//                ->andWhere("s.organisateur === :user")
+//                ->setParameter("user", $rechercheSortie->getParticipant());
+//        }
+//        if ($rechercheSortie->getIsInscrit() === true) {
+//            $query = $query
+//                ->andWhere(" :parti IN s.participants")
+//                ->setParameter("parti", $rechercheSortie->getParticipant());
+//        }
+//        if ($rechercheSortie->getSortiePassee() === true) {
+//            $query = $query
+//                ->andWhere("etat.libelle === 'passée'");
+//        }
+
+        $query = $query
+            ->getQuery()
+            ->getResult();
+
+        return $query;
     }
 
 //    /**

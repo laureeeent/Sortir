@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/participant')]
 class ParticipantController extends AbstractController
 {
+
     #[Route('/index', name: 'app_participant')]
     public function index(): Response
     {

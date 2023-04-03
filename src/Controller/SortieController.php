@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\RechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Form\RechercheSortieType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
@@ -15,24 +17,34 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
+    #[IsGranted('ROLE_USER')]
     #[Route('/list', name: 'sortie_list')]
     public function list(
+        Request $request,
         SortieRepository $sortieRepository
     ): Response
     {
-        $sorties = $sortieRepository->findAll();
+
+        $rechercheSortie = new RechercheSortie();
+        $rechercheForm = $this->createForm(RechercheSortieType::class, $rechercheSortie);
+        $rechercheForm->handleRequest($request);
+        $rechercheSortie->setParticipant($this->getUser());
+        $sorties = $sortieRepository->findSearch($rechercheSortie);
         return $this->render('sortie/list.html.twig',
-            compact("sorties")
+            compact("rechercheForm", "sorties")
         );
+
     }
 
 
     #[Route('/ajouter', name: 'sortie_ajouter')]
     public function ajouter (
+
         Request                $request,
         EntityManagerInterface $entityManager,
         EtatRepository         $etatRepository
@@ -85,8 +97,10 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        if ($sortie->getEtat()->getId() === 2) {
+
+        if ($sortie->getEtat()->getLibelle() === "Ouverte") {
             if ($this->getUser() != null && ($sortie->getParticipants()->count() < $sortie->getNbInscriptionMax())) {
+
                 $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
                 $sortie->addParticipant($participant);
                 $participant->addSortie($sortie);
