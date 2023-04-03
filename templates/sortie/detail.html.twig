@@ -32,5 +32,7 @@
         </nav>
     {% endif %}
     <button><a href="{{ path("sortie_inscription", {"sortie" : sortie.id}) }}" style="text-decoration: none">s'inscrire à la sortie</a></button>
+    <button><a href="{{ path("sortie_desistement", {"sortie" : sortie.id}) }}" style="text-decoration: none">se désister</a></button>
+
 {% endblock %}
 
