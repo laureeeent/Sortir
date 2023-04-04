@@ -130,8 +130,7 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        if ($sortie->getEtat()->getId() === 2) {
-           // if ($this->getUser()  ) {
+        if ($sortie->getEtat()->getLibelle() === "Ouverte") {
                 $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
                 $sortie->removeParticipant($participant);
                 $participant->removeSortie($sortie);
@@ -139,11 +138,6 @@ class SortieController extends AbstractController
                 $entityManager->persist($participant);
                 $entityManager->flush();
                 return $this->redirectToRoute('sortie_list');
-          /*  }
-            else {
-                $this->addFlash('echec', 'Vous n\'avez pas pu vous désister de la sortie.');
-                return $this->redirectToRoute('sortie_list');*/
-         //   }
         }
         else {
             $this->addFlash('echec', 'Vous ne pouvez pas vous désister à une sortie dont la période d\'inscription est terminée.');
@@ -152,6 +146,36 @@ class SortieController extends AbstractController
 
 
     }
+
+
+
+    #[Route('/annuler/{sortie}/', name: 'sortie_annuler')]
+    public function annuler(
+        Sortie $sortie,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        if ($sortie->getEtat()->getLibelle() === "Créée") {
+             if ($entityManager->find(Participant::class, $this->getUser()->getId()) === $sortie->getOrganisateur())  {
+                $organisateur = $entityManager->find(Participant::class, $this->getUser()->getId());
+                $entityManager->remove($sortie);
+                $entityManager->flush();
+                return $this->redirectToRoute('sortie_list');
+              }
+              else {
+                  $this->addFlash('echec', 'Vous n\'avez pas pu supprimer votre sortie.');
+                  return $this->redirectToRoute('sortie_list');
+               }
+        }
+        else {
+            $this->addFlash('echec', 'Vous ne pouvez pas annuler votre sortie la période d\'inscription est terminée.');
+            return $this->redirectToRoute('sortie_list');
+        }
+
+
+    }
+
+
 
 
     #[Route('/get/lieux/{ville}', name: 'sortie_getville')]
