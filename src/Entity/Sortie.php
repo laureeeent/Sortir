@@ -64,6 +64,9 @@ class  Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $ville = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateArchivage = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -248,6 +251,18 @@ class  Sortie
     public function setVille(?Ville $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getDateArchivage(): ?\DateTimeInterface
+    {
+        return $this->dateArchivage;
+    }
+
+    public function setDateArchivage(?\DateTimeInterface $dateArchivage): self
+    {
+        $this->dateArchivage = $dateArchivage;
 
         return $this;
     }
