@@ -45,9 +45,25 @@ class SortieRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('s')
-            ->leftjoin("s.participants", "participants")
             ->innerJoin("s.etat", "etat")
             ;
+
+        if ($rechercheSortie->getIsNonInscrit() === true && $rechercheSortie->getIsNonInscrit() === true) {
+            $query = $query
+                ->leftjoin("s.participants", "participants");
+        }
+        else if ($rechercheSortie->getIsInscrit() === true) {
+            $query = $query
+                ->leftJoin("s.participants", "participants")
+                ->andWhere(" :parti = participants")
+                ->setParameter("parti", $rechercheSortie->getParticipant());
+        }
+        else if ($rechercheSortie->getIsNonInscrit() === true) {
+            $query = $query
+                ->leftJoin("s.participants", "participants")
+                ->andWhere(":parti_id != participants.id")
+                ->setParameter("parti", $rechercheSortie->getParticipant()->getId());
+        }
 
 
         if (!empty($rechercheSortie->getCampus())) {
@@ -84,14 +100,10 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere("s.organisateur = :user")
                 ->setParameter("user", $rechercheSortie->getParticipant());
         }
-        if ($rechercheSortie->getIsInscrit() === true) {
-            $query = $query
-                ->andWhere(" :parti IN s.participants")
-                ->setParameter("parti", $rechercheSortie->getParticipant());
-        }
+
         if ($rechercheSortie->getSortiePassee() === true) {
             $query = $query
-                ->andWhere("etat.libelle === 'passée'");
+                ->andWhere("etat.libelle = 'passée'");
         }
 
         $query = $query
