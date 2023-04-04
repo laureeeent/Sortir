@@ -7,6 +7,7 @@
     {{ form_end(rechercheForm) }}
     <ul>
         {% for sortie in sorties %}
+            {% if not (sortie.etat.libelle == "Archivée") %}
             <li><a href="{{ path('sortie_detail', {'sortie' : sortie.id}) }}" style="text-decoration: none">{{ sortie.nom }} </a> ,
                 durée : {{ sortie.duree | date('H:i:s') }},
                 date limite d'inscription : {{ sortie.dateLimiteInscription | date("d/m/y H:i") }},
@@ -14,6 +15,7 @@
                 Début : {{ sortie.dateHeureDebut | date("d/m/y H:i")}}
             <button><a href="{{ path("sortie_inscription", {"sortie" : sortie.id}) }}" style="text-decoration: none">s'inscrire</a></button>
             </li>
+            {% endif %}
         {% endfor %}
     </ul>
 
