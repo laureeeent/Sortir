@@ -1,14 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<p>Prenom :  {{ id.prenom }}</p>
-<p>Nom :  {{ id.nom }}</p>
-<p>Telephone :  {{ id.telephone }}</p>
-<p>Email :  {{ id.email }}</p>
-<p>Campus :  {{ id.campus.nom }}</p>
-
-    <img src=" {{ asset("photoprofil/"~id.photo )}} " >
-
+<p>Prenom :  {{ participant.prenom }}</p>
+<p>Nom :  {{ participant.nom }}</p>
+<p>Telephone :  {{ participant.telephone }}</p>
+<p>Email :  {{ participant.email }}</p>
+<p>Campus :  {{ participant.campus.nom }}</p>
+<div id="photoprofil">
+    {% if participant.photo %}
+        <img src=" {{ asset("photoprofil/"~participant.photo.photoprofil )}} " >
+    {% else %}
+        <img src=" {{ asset("photoprofil/default.png" )}} " >
+    {% endif %}
+</div>
     <button><a href="{{ path('sortie_list') }}" style="text-decoration: none">Retour</a></button>
 {% endblock %}
 
+{#
+{{ id.photo ? id.photo : default }}#}

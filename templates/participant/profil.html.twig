@@ -2,6 +2,15 @@
 
 {% block body %}
     <h1>{{ app.user.userIdentifier }}</h1>
+   <div id="photoprofil">
+       {% if participant.photo %}
+            <img src=" {{ asset("photoprofil/"~participant.photo.photoprofil )}} " >
+       {% else %}
+           <img src=" {{ asset("photoprofil/default.png" )}} " >
+        {% endif %}
+   </div>
+
+{#    <img src=" {{ asset("photoprofil/"~ {{ participant.photo.photoprofil ? participant.photo.photoprofil : default}} )}} " >#}
     {{ form_start(participantForm) }}
     {{ form_widget(participantForm) }}
     <button>Modifier</button>
