@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    {{ form_start(sortieForm) }}
+    {{ form_widget(sortieForm) }}
+    <button name="formBouton" value="enregistrer">Enregistrer</button>
+    <button name="formBouton" value="publier">Publier</button>
+    <button name="formBouton" value="supprimer">Supprimer</button>
+    <button name="formBouton" value="annuler">Annuler</button>
+    {{ form_end(sortieForm) }}
+{% endblock %}

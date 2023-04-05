@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <h1>{{ app.user.userIdentifier }}</h1>
     {{ form_start(participantForm) }}
     {{ form_widget(participantForm) }}
     <button>Modifier</button>

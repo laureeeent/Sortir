@@ -34,6 +34,8 @@ class  Sortie
     )]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
+
+
     #[ORM\Column]
     private ?int $nbInscriptionMax = null;
 
@@ -218,6 +220,31 @@ class  Sortie
 
         return $this;
     }
+
+    #[Assert\Callback()]
+    public function nbrParticipantsValid(ExecutionContextInterface $context) {
+        $nbrParticipants = $this->participants->count();
+
+        if ($nbrParticipants > $this->nbInscriptionMax) {
+            $context
+                ->buildViolation('Le nombre de participants ne peut pas dépasser le nombre maximum d\'inscriptions.')
+                ->atPath('participants')
+                ->addViolation();
+        }
+    }
+
+    #[Assert\Callback()]
+    public function isNbrInscriptionMaxValid(ExecutionContextInterface $context) {
+        $nbrParticipants = $this->participants->count();
+
+        if ($this->nbInscriptionMax < 0) {
+            $context
+                ->buildViolation('Le nombre de participants ne peut pas être inférieur à 0.')
+                ->atPath('participants')
+                ->addViolation();
+        }
+    }
+
     #[Assert\Callback()]
     public function isDateInscriptionValid(ExecutionContextInterface $context):void{
         $now = new \DateTime('now');

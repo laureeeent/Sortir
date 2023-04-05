@@ -39,6 +39,8 @@
     {% if not (sortie.etat.libelle == "Ouverte")%}
         <button><a href="{{ path("sortie_supprimer", {"sortie" : sortie.id}) }}" style="text-decoration: none">Supprimer la sortie</a></button>
     {% endif %}
-
+    {% if (app.user.id == sortie.organisateur.id) and (sortie.etat.libelle == "Créée") %}
+        <button><a href="{{ path("sortie_modifier", {"sortie" : sortie.id}) }}" style="text-decoration: none">Modifier la sortie</a></button>
+    {% endif %}
 {% endblock %}
 
