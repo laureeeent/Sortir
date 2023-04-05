@@ -1,9 +1,13 @@
+body{
+    background-color: #f3f0f0;
+}
 img {
+
     max-width: 10%;
     margin-right: auto;
     margin-bottom: 1em;
-/*    display: flex;
-    text-align: center;*/
+    display: flex;
+    text-align: center;
 }
 
 
@@ -17,7 +21,7 @@ img {
 
 #barrenav li {
     float: left;
-    border-right:1px solid #bbb;
+    border-right:1px solid #d5cdcd;
 }
 
 #barrenav li:last-child {
@@ -26,14 +30,30 @@ img {
 
 #barrenav li a {
     display: block;
-    color: white;
+    color: #ffffff;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 #barrenav li a:hover:not(.active) {
-    background-color: #111;
+    background-color: #8d8585;
+}
+
+form{
+    text-align: center;
+}
+
+#photoprofil img{
+    border: solid 1px;
+    border-radius: 50%;
+    width: 20em;
+    height: 11em;
 }
 
 
+Form {
+    display: block;
+    width: 150px;
+    float: left;
+}
