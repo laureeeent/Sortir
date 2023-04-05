@@ -16,6 +16,9 @@ class Photo
     #[ORM\Column(length: 255)]
     private ?string $photoProfil = null;
 
+    #[ORM\OneToOne(mappedBy: 'photo', cascade: ['persist', 'remove'])]
+    private ?Participant $participant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,28 @@ class Photo
     public function setPhotoProfil(string $photoProfil): self
     {
         $this->photoProfil = $photoProfil;
+
+        return $this;
+    }
+
+    public function getParticipant(): ?Participant
+    {
+        return $this->participant;
+    }
+
+    public function setParticipant(?Participant $participant): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($participant === null && $this->participant !== null) {
+            $this->participant->setPhoto(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($participant !== null && $participant->getPhoto() !== $this) {
+            $participant->setPhoto($this);
+        }
+
+        $this->participant = $participant;
 
         return $this;
     }
