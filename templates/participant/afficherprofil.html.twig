@@ -7,6 +7,8 @@
 <p>Email :  {{ id.email }}</p>
 <p>Campus :  {{ id.campus.nom }}</p>
 
+    <img src=" {{ asset("photoprofil/"~id.photo )}} " >
+
     <button><a href="{{ path('sortie_list') }}" style="text-decoration: none">Retour</a></button>
 {% endblock %}
 
