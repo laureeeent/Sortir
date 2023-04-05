@@ -60,6 +60,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
 
+    #[ORM\OneToOne(inversedBy: 'participant', cascade: ['persist', 'remove'])]
+    private ?Photo $photo = null;
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
@@ -258,6 +261,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?Photo
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?Photo $photo): self
+    {
+        $this->photo = $photo;
 
         return $this;
     }
