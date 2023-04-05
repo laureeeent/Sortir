@@ -42,7 +42,7 @@ class SortieController extends AbstractController
 
 
     #[Route('/ajouter', name: 'sortie_ajouter')]
-    public function ajouter (
+    public function ajouter(
 
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -67,8 +67,7 @@ class SortieController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('succes', 'La sortie a bien été insérée');
                 return $this->redirectToRoute('sortie_list');
-            }
-            catch (\Exception $exception) {
+            } catch (\Exception $exception) {
                 $this->addFlash('echec', 'La sortie n\'a pas été insérée');
                 //changer la route et remettre '/'
                 return $this->redirectToRoute('sortie_ajouter');
@@ -80,9 +79,58 @@ class SortieController extends AbstractController
         );
     }
 
+    #[Route('/modifier/{sortie}', name: 'sortie_modifier')]
+    public function modifier(
+
+        Request                $request,
+        EntityManagerInterface $entityManager,
+        EtatRepository         $etatRepository,
+        Sortie                 $sortie
+    ): Response
+    {
+
+        $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
+        $etatCree = $etatRepository->findOneBy(['libelle' => 'Créée']);
+        $etatOuverte = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
+        $organisateur = $entityManager->find(Participant::class, $this->getUser()->getId());
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
+
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid() && $organisateur == true) {
+            if ($organisateur === $sortie->getOrganisateur()) {
+                try {
+                    if ($request->get("formBouton") === "enregistrer") {
+                        $entityManager->persist($sortie);
+                        $entityManager->flush();
+                        $this->addFlash('succes', 'La sortie a bien été enregistrée');
+                    } else if ($request->get("formBouton") === "publier") {
+                        $sortie->setEtat($etatOuverte);
+                        $entityManager->persist($sortie);
+                        $entityManager->flush();
+                        $this->addFlash('succes', 'La sortie a bien été publiée');
+                    } else if ($request->get("formBouton") === "supprimer") {
+                        $entityManager->remove($sortie);
+                        $entityManager->flush();
+                        $this->addFlash('succes', 'La sortie a bien été supprimée');
+                    } else {
+                        return $this->redirectToRoute('sortie_list');
+                    }
+                    return $this->redirectToRoute('sortie_list');
+                } catch (\Exception $exception) {
+                    $this->addFlash('echec', 'La sortie n\'a pas été modifiée');
+                    return $this->redirectToRoute('sortie_modifier');
+                }
+            }
+        }
+
+        return $this->render('sortie/modifier.html.twig',
+            compact('sortieForm')
+        );
+    }
+
     #[Route('/detail/{sortie}', name: 'sortie_detail')]
     public function detail(
-        Sortie $sortie,
+        Sortie           $sortie,
         SortieRepository $sortieRepository
     ): Response
     {
@@ -95,7 +143,7 @@ class SortieController extends AbstractController
 
     #[Route('/inscription/{sortie}/', name: 'sortie_inscription')]
     public function inscription(
-        Sortie $sortie,
+        Sortie                 $sortie,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -110,13 +158,11 @@ class SortieController extends AbstractController
                 $entityManager->persist($participant);
                 $entityManager->flush();
                 return $this->redirectToRoute('sortie_list');
-            }
-            else {
+            } else {
                 $this->addFlash('echec', 'Vous n\'avez pas été inscrit à la sortie.');
                 return $this->redirectToRoute('sortie_list');
             }
-        }
-        else {
+        } else {
             $this->addFlash('echec', 'Vous ne pouvez pas vous inscrire à une sortie dont la période d\'inscription est terminée.');
             return $this->redirectToRoute('sortie_list');
         }
@@ -125,23 +171,21 @@ class SortieController extends AbstractController
     }
 
 
-
     #[Route('/desistement/{sortie}/', name: 'sortie_desistement')]
     public function desistement(
-        Sortie $sortie,
+        Sortie                 $sortie,
         EntityManagerInterface $entityManager
     ): Response
     {
         if ($sortie->getEtat()->getLibelle() === "Ouverte") {
-                $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
-                $sortie->removeParticipant($participant);
-                $participant->removeSortie($sortie);
-                $entityManager->persist($sortie);
-                $entityManager->persist($participant);
-                $entityManager->flush();
-                return $this->redirectToRoute('sortie_list');
-        }
-        else {
+            $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
+            $sortie->removeParticipant($participant);
+            $participant->removeSortie($sortie);
+            $entityManager->persist($sortie);
+            $entityManager->persist($participant);
+            $entityManager->flush();
+            return $this->redirectToRoute('sortie_list');
+        } else {
             $this->addFlash('echec', 'Vous ne pouvez pas vous désister à une sortie dont la période d\'inscription est terminée.');
             return $this->redirectToRoute('sortie_list');
         }
@@ -150,26 +194,23 @@ class SortieController extends AbstractController
     }
 
 
-
     #[Route('/supprimer/{sortie}/', name: 'sortie_supprimer')]
     public function supprimer(
-        Sortie $sortie,
+        Sortie                 $sortie,
         EntityManagerInterface $entityManager
     ): Response
     {
         if ($sortie->getEtat()->getLibelle() === "Créée") {
-             if ($entityManager->find(Participant::class, $this->getUser()->getId()) === $sortie->getOrganisateur())  {
+            if ($entityManager->find(Participant::class, $this->getUser()->getId()) === $sortie->getOrganisateur()) {
                 $organisateur = $entityManager->find(Participant::class, $this->getUser()->getId());
                 $entityManager->remove($sortie);
                 $entityManager->flush();
                 return $this->redirectToRoute('sortie_list');
-              }
-              else {
-                  $this->addFlash('echec', 'Vous n\'avez pas pu supprimer votre sortie.');
-                  return $this->redirectToRoute('sortie_list');
-               }
-        }
-        else {
+            } else {
+                $this->addFlash('echec', 'Vous n\'avez pas pu supprimer votre sortie.');
+                return $this->redirectToRoute('sortie_list');
+            }
+        } else {
             $this->addFlash('echec', 'Vous ne pouvez pas supprimer votre sortie car la période d\'inscription est terminée.');
             return $this->redirectToRoute('sortie_list');
         }
@@ -183,20 +224,19 @@ class SortieController extends AbstractController
     ): Response
     {
         if ($sortie->getEtat()->getLibelle() === "Ouverte") {
-            $etatAnnulee = $etatRepository->findOneBy(['libelle'=>'Annulée']);
+            $etatAnnulee = $etatRepository->findOneBy(['libelle' => 'Annulée']);
             $sortie->setEtat($etatAnnulee);
-            if ($entityManager->find(Participant::class, $this->getUser()->getId()) === $sortie->getOrganisateur())  {
+            if ($entityManager->find(Participant::class, $this->getUser()->getId()) === $sortie->getOrganisateur()) {
                 $organisateur = $entityManager->find(Participant::class, $this->getUser()->getId());
                 $entityManager->persist($sortie);
-                $entityManager->flush();$this->addFlash('succes', 'La sortie a bien été annulée');
+                $entityManager->flush();
+                $this->addFlash('succes', 'La sortie a bien été annulée');
                 return $this->redirectToRoute('sortie_list');
-            }
-            else {
+            } else {
                 $this->addFlash('echec', 'Vous n\'avez pas pu annuler votre sortie.');
                 return $this->redirectToRoute('sortie_list');
             }
-        }
-        else {
+        } else {
             $this->addFlash('echec', 'Vous ne pouvez pas annuler votre sortie car la période d\'inscription a commencé.');
             return $this->redirectToRoute('sortie_list');
         }
@@ -204,7 +244,7 @@ class SortieController extends AbstractController
 
     #[Route('/get/lieux/{ville}', name: 'sortie_getville')]
     public function getLieuxVille(
-        Ville           $ville,
+        Ville            $ville,
         VilleRepository  $villeRepository,
         SortieRepository $sortieRepository
     ): Response
