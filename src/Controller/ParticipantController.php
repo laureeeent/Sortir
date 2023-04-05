@@ -53,11 +53,11 @@ class ParticipantController extends AbstractController
         $photo = new Photo();
         if($participantForm->isSubmitted() && $participantForm->isValid()){
 
-            $photoFile = $participantForm->get('participant[photo]')->getData();
+            $photoFile = $participantForm->get('photo')->getData();
             if ($photoFile){
                 $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'-'.$photoFile->guessExtension();
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
 
                 try {
                     $photoFile->move(
@@ -65,8 +65,11 @@ class ParticipantController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e){
-                    $this->addFlash('echec','le format est incorect');
+                    $this->addFlash('echec','le format est incorrect');
                 }
+
+                $photo->setPhotoProfil($newFilename);
+                $participant->setPhoto($photo);
 
             }
 

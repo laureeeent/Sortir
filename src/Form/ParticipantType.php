@@ -55,9 +55,7 @@ class ParticipantType extends AbstractType
                     new File([
                         'maxSize' => '1024K',
                         'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                            'application/png',
+                            'image/*',
                         ],
                         'mimeTypesMessage' => 'Choisissez un fichier PDF bande de salope',
                     ])
