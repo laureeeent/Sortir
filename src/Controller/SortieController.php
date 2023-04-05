@@ -11,6 +11,7 @@ use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -145,8 +146,6 @@ class SortieController extends AbstractController
             $this->addFlash('echec', 'Vous ne pouvez pas vous désister à une sortie dont la période d\'inscription est terminée.');
             return $this->redirectToRoute('sortie_list');
         }
-
-
     }
 
 
@@ -159,7 +158,6 @@ class SortieController extends AbstractController
     {
         if ($sortie->getEtat()->getLibelle() === "Créée") {
              if ($entityManager->find(Participant::class, $this->getUser()->getId()) === $sortie->getOrganisateur())  {
-                $organisateur = $entityManager->find(Participant::class, $this->getUser()->getId());
                 $entityManager->remove($sortie);
                 $entityManager->flush();
                 return $this->redirectToRoute('sortie_list');
@@ -185,8 +183,8 @@ class SortieController extends AbstractController
         if ($sortie->getEtat()->getLibelle() === "Ouverte") {
             $etatAnnulee = $etatRepository->findOneBy(['libelle'=>'Annulée']);
             $sortie->setEtat($etatAnnulee);
+            //$ajd =
             if ($entityManager->find(Participant::class, $this->getUser()->getId()) === $sortie->getOrganisateur())  {
-                $organisateur = $entityManager->find(Participant::class, $this->getUser()->getId());
                 $entityManager->persist($sortie);
                 $entityManager->flush();$this->addFlash('succes', 'La sortie a bien été annulée');
                 return $this->redirectToRoute('sortie_list');

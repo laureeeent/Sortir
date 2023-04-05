@@ -61,7 +61,7 @@ class SortieRepository extends ServiceEntityRepository
         else if ($rechercheSortie->getIsNonInscrit() === true) {
             $query = $query
                 ->leftJoin("s.participants", "participants")
-                ->andWhere(":parti_id != participants.id")
+                ->andWhere(":parti_id != participants.id OR participants.id IS NULL")
                 ->setParameter("parti_id", $rechercheSortie->getParticipant()->getId());
         }
         else {
@@ -107,7 +107,11 @@ class SortieRepository extends ServiceEntityRepository
 
         if ($rechercheSortie->getSortiePassee() === true) {
             $query = $query
-                ->andWhere("etat.libelle = 'passée'");
+                ->andWhere("etat.libelle = 'Passée'");
+        }
+        else {
+            $query = $query
+                ->andWhere("etat.libelle != 'Passée'");
         }
 
         $query = $query
