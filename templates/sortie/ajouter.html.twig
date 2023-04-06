@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form_start(sortieForm) }}
-    {{ form_widget(sortieForm) }}
-    <button name="formBouton" value="enregistrer">Enregistrer</button>
-    <button name="formBouton" value="publier">Publier</button>
-    {{ form_end(sortieForm) }}
-    <button>ajouter un lieu</button>
-
+    <link rel="stylesheet" href="{{ asset('css/ajoutSortie.css') }}">
+    <div class="container">
+        {{ form_start(sortieForm) }}
+        {{ form_widget(sortieForm) }}
+        <button name="formBouton" value="enregistrer">Enregistrer</button>
+        <button name="formBouton" value="publier">Publier</button>
+        {{ form_end(sortieForm) }}
+        <button>ajouter un lieu</button>
+    </div>
     <script>
 
 
@@ -24,8 +26,8 @@
                     lieuSelect.append("")
 
                     for (let i = 0; i < response.length; i++) {
-                        let textLieu = "<option value="+response[i]["id"]+">"
-                        +response[i]["nom"]+"</option>";
+                        let textLieu = "<option value=" + response[i]["id"] + ">"
+                            + response[i]["nom"] + "</option>";
                         lieuSelect.append(textLieu);
                     }
                 }
