@@ -40,9 +40,9 @@ img {
     background-color: #8d8585;
 }
 
-form{
+/*form{
     text-align: center;
-}
+}*/
 
 #photoprofil img{
     border: solid 1px;
@@ -51,9 +51,3 @@ form{
     height: 11em;
 }
 
-
-Form {
-    display: block;
-    width: 150px;
-    float: left;
-}
