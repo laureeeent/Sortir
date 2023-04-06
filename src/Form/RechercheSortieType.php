@@ -5,11 +5,11 @@ namespace App\Form;
 use App\Entity\Campus;
 use App\Entity\RechercheSortie;
 use App\Entity\Sortie;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\BooleanFilterType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,7 +24,10 @@ class RechercheSortieType extends AbstractType
                 'placeholder' => "Tout les campus",
                 'required' => false
             ])
-            ->add("nomSortieContient")
+            ->add("nomSortieContient", TextType::class, [
+                'label'=> 'Le nom de la sortie contient',
+                'required'=> false
+            ])
             ->add("dateAPartirDe", DateTimeType::class, [
                 'label'=>'A partir du ',
                 'html5' => true,
@@ -39,18 +42,22 @@ class RechercheSortieType extends AbstractType
                 'mapped' => true,
                 'required'=>false,
             ])
-            ->add("isOrganisateur", CheckboxType::class, [
-                'required' => false,
 
+            ->add("isOrganisateur", CheckboxType::class,[
+                'label'=> 'Sorties dont je suis l\'organisateur/trice',
+                'required'=> false
             ])
-            ->add("isInscrit", CheckboxType::class, [
-                'required' => false
+            ->add("isInscrit", CheckboxType::class,[
+                'label'=> 'Sorties auxquelles je suis inscrit/e',
+                'required'=> false
             ])
-            ->add("isNonInscrit", CheckboxType::class, [
-                "required" => false
+            ->add("isNonInscrit", CheckboxType::class,[
+                'label'=> 'Sorties auxquelles je suis ne pas inscrit/e',
+                'required'=> false
             ])
-            ->add("sortiePassee", CheckboxType::class, [
-                "required" => false
+            ->add("sortiePassee", CheckboxType::class,[
+                'label'=> 'Sorties passées',
+                'required'=> false
             ])
         ;
     }

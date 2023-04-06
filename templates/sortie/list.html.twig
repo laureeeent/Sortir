@@ -1,25 +1,34 @@
 {% extends 'base.html.twig' %}
 
+
 {% block body %}
-    {{ form_start(rechercheForm) }}
-    {{ form_widget(rechercheForm) }}
-        <button>Rechercher</button>
-    {{ form_end(rechercheForm) }}
-    <ul>
-        {% for sortie in sorties %}
-            {% if not (sortie.etat.libelle == "Archivée") %}
-            <li><a href="{{ path('sortie_detail', {'sortie' : sortie.id}) }}" style="text-decoration: none">{{ sortie.nom }} </a> ,
-                durée : {{ sortie.duree | date('H:i:s') }},
-                date limite d'inscription : {{ sortie.dateLimiteInscription | date("d/m/y H:i") }},
-                statut : {{ sortie.etat.libelle }},
-                Début : {{ sortie.dateHeureDebut | date("d/m/y H:i")}}
 
-            <button><a href="{{ path("sortie_inscription", {"sortie" : sortie.id}) }}" style="text-decoration: none">s'inscrire</a></button>
-            </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-
+    <div class="container">
+        <link rel="stylesheet" href="{{ asset('css/listeSortie.css') }}">
+        <div class="filtressorties">
+            {{ form_start(rechercheForm) }}
+            {{ form_widget(rechercheForm) }}
+            <button>Rechercher</button>
+            {{ form_end(rechercheForm) }}
+        </div>
+            <div id="sorties">
+                <ul>
+                    {% for sortie in sorties %}
+                        {% if not (sortie.etat.libelle == "Archivée") %}
+                            <li><a href="{{ path('sortie_detail', {'sortie' : sortie.id}) }}"
+                                   style="text-decoration: none">{{ sortie.nom }} </a> ,
+                                durée : {{ sortie.duree | date('H:i:s') }},
+                                date limite d'inscription : {{ sortie.dateLimiteInscription | date("d/m/y H:i") }},
+                                statut : {{ sortie.etat.libelle }},
+                                Début : {{ sortie.dateHeureDebut | date("d/m/y H:i") }}
+                                <button><a href="{{ path("sortie_inscription", {"sortie" : sortie.id}) }}"
+                                           style="text-decoration: none">s'inscrire</a></button>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+    </div>
 {% endblock %}
 
 {% block title %}
