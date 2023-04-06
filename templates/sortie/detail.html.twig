@@ -27,7 +27,7 @@
         <div><label>Pseudo : </label>   <label>Nom : </label></div>
         <nav>
             {% for participant in participants %}
-                <div id="pseudo"> ° <a href="{{ path("app_afficher_profil" , {"id" : participant.id}) }}" style="text-decoration: none">{{ participant.username }}</a> | </div> <div> {{ participant.prenom }} {{ participant.nom }}</div> <br>
+                <div id="pseudo"> ° <a href="{{ path("app_afficher_profil" , {"participant" : participant.id}) }}" style="text-decoration: none">{{ participant.username }}</a> | </div> <div> {{ participant.prenom }} {{ participant.nom }}</div> <br>
             {% endfor %}
         </nav>
     {% endif %}
