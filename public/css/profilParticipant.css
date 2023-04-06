@@ -1,0 +1,33 @@
+.container {  display: grid;
+    justify-items: center;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr 0.5fr 2fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+    "photoprofil"
+    "username"
+    "form";
+}
+
+.photoprofil {
+    grid-area: photoprofil;
+}
+
+.username {
+    grid-area: username;
+}
+
+.form {
+    grid-area: form;
+}
+
+#photoprofil img {
+    display: grid;
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+}
+
+
