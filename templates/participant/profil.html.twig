@@ -1,18 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ app.user.userIdentifier }}</h1>
-   <div id="photoprofil">
-       {% if participant.photo %}
-            <img src=" {{ asset("photoprofil/"~participant.photo.photoprofil )}} " >
-       {% else %}
-           <img src=" {{ asset("photoprofil/default.png" )}} " >
-        {% endif %}
-   </div>
-
-{#    <img src=" {{ asset("photoprofil/"~ {{ participant.photo.photoprofil ? participant.photo.photoprofil : default}} )}} " >#}
-    {{ form_start(participantForm) }}
-    {{ form_widget(participantForm) }}
-    <button>Modifier</button>
-    {{ form_end(participantForm) }}
+    <div class="container">
+        <link rel="stylesheet" href="{{ asset('css/profilParticipant.css') }}">
+        <h1 class="username">{{ app.user.userIdentifier }}</h1>
+        <div id="photoprofil">
+            {% if participant.photo %}
+                <img src=" {{ asset("photoprofil/"~participant.photo.photoprofil ) }} ">
+            {% else %}
+                <img src=" {{ asset("photoprofil/default.png" ) }} ">
+            {% endif %}
+        </div>
+        <div class="form">
+            {{ form_start(participantForm) }}
+            {{ form_widget(participantForm) }}
+            <button class="boutonModifier">Modifier</button>
+            {{ form_end(participantForm) }}
+        </div>
+    </div>
 {% endblock %}
