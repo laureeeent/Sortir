@@ -57,7 +57,7 @@ class ParticipantType extends AbstractType
                         'mimeTypes' => [
                             'image/*',
                         ],
-                        'mimeTypesMessage' => 'Choisissez un fichier PDF bande de salope',
+                        'mimeTypesMessage' => 'Choisissez un fichier PDF',
                     ])
                 ],
             ])

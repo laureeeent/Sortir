@@ -2,19 +2,29 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Entity\Photo;
+use App\Form\ImportParticipantFormType;
 use App\Form\ParticipantType;
+use App\Repository\CampusRepository;
+use App\Services\Hasher;
+use App\Services\ParticipantService;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Reader;
+use PHPUnit\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 #[Route('/participant')]
 class ParticipantController extends AbstractController
@@ -73,7 +83,6 @@ class ParticipantController extends AbstractController
 
             }
 
-
             $entityManager->persist($participant);
             $entityManager->flush();
             return $this->redirectToRoute('app_participant');
@@ -84,13 +93,16 @@ class ParticipantController extends AbstractController
         );
     }
 
+
+
     #[Route(
         '/affichage/{participant}',
         name: 'app_afficher_profil'
     )]
     public function afficherProfil(
         Participant $participant,
-
+        Hasher $hasher,
+        EntityManagerInterface $entityManager
     ): Response
     {
 
@@ -98,5 +110,84 @@ class ParticipantController extends AbstractController
             compact('participant')
         );
     }
+
+    #[IsGranted("ROLE_ADMIN")]
+    #[Route(
+        '/import/input-csv',
+        name: 'app_import_input_csv'
+    )]
+    public function inputCSV(
+        Request     $request,
+        SluggerInterface $slugger,
+        ParticipantService $participantService,
+    ): Response
+    {
+        $importParticipantsForm = $this->createForm(ImportParticipantFormType::class);
+        $importParticipantsForm->handleRequest($request);
+
+        $csvFile = $importParticipantsForm->get('fichiercsv')->getData();
+        if ($importParticipantsForm->isSubmitted() && $importParticipantsForm->isValid()) {
+            $originalFilename = pathinfo($csvFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$csvFile->guessExtension();
+            try {
+                $csvFile->move(
+                    $this->getParameter('csv_participants_directory'),
+                    "participants.csv"
+                );
+                $participantService->importParticpants();
+            } catch (FileException $e){
+                $this->addFlash('echec','le format est incorrect');
+            }
+        }
+
+        return $this->render('participant/import-csv.html.twig', compact("importParticipantsForm"));
+    }
+
+//    #[Route(
+//        '/import-participants',
+//        name: 'app_import_participants'
+//    )]
+//    public function importParticpants(
+//        Request                $request,
+//        Hasher                 $hasher,
+//        EntityManagerInterface $entityManager,
+//        CampusRepository       $campusRepository
+//
+//    ): Response
+//    {
+//
+//        $path = 'CSV/participants.csv';
+//        $participantsCSV = Reader::createFromPath($path, 'r');
+//        $participantsCSV->setDelimiter(';');
+//        $participantsCSV->setHeaderOffset(0);
+//        $rows = $participantsCSV->getRecords();
+//
+//        //var_dump($rows);
+//        foreach($rows as $row) {
+//            try {
+//                $participant = new Participant();
+//                $participant->setUsername($row["pseudo"]);
+//
+//                $participant->setPrenom($row["Prenom"]);
+//                $participant->setNom($row["Nom"]);
+//                $participant->setTelephone($row["telephone"]);
+//                $participant->setEmail($row["email"]);
+//                $participant->setPassword($hasher->hash($row["motDePasse"], $participant));
+//                $participant->setActif(true);
+//                $campus = $campusRepository->findOneBy(["nom"=> $row["campus"]]);
+//                $participant->setCampus($campus);
+//
+//                $entityManager->persist($participant);
+//                $entityManager->flush();
+//            } catch (Exception $e) {
+//                return $this->render('participants/import-csv.html.twig');
+//            }
+//        }
+//
+//        return $this->render('app_list');
+//    }
+
+
 
 }
