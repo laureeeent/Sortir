@@ -25,7 +25,8 @@ class RechercheSortieType extends AbstractType
                 'required' => false
             ])
             ->add("nomSortieContient", TextType::class, [
-                'label'=> 'Le nom de la sortie contient'
+                'label'=> 'Le nom de la sortie contient',
+                'required'=> false
             ])
             ->add("dateAPartirDe", DateTimeType::class, [
                 'label'=>'A partir du ',
@@ -42,16 +43,20 @@ class RechercheSortieType extends AbstractType
                 'required'=>false,
             ])
             ->add("isOrganisateur", CheckboxType::class,[
-                'label'=> 'Sorties dont je suis l\'organisateur/trice'
+                'label'=> 'Sorties dont je suis l\'organisateur/trice',
+                'required'=> false
             ])
             ->add("isInscrit", CheckboxType::class,[
-                'label'=> 'Sorties auxquelles je suis inscrit/e'
+                'label'=> 'Sorties auxquelles je suis inscrit/e',
+                'required'=> false
             ])
             ->add("isNonInscrit", CheckboxType::class,[
-                'label'=> 'Sorties auxquelles je suis ne pas inscrit/e'
+                'label'=> 'Sorties auxquelles je suis ne pas inscrit/e',
+                'required'=> false
             ])
             ->add("sortiePassee", CheckboxType::class,[
-                'label'=> 'Sorties passées'
+                'label'=> 'Sorties passées',
+                'required'=> false
             ])
         ;
     }
