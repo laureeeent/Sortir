@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
+use App\Entity\Ville;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -43,6 +45,8 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Participant', 'fas fa-list', Participant::class);
+        yield MenuItem::linkToCrud('Ville', 'fas fa-list', Ville::class);
+        yield MenuItem::linkToCrud('Campus', 'fas fa-list', Campus::class);
         yield MenuItem::linkToRoute("Ajout Participants Par CSV", "fas fa-list", "app_import_input_csv");
     }
 }
