@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\BooleanFilterType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,10 +39,10 @@ class RechercheSortieType extends AbstractType
                 'mapped' => true,
                 'required'=>false,
             ])
-            ->add("isOrganisateur", BooleanFilterType::class)
-            ->add("isInscrit", BooleanFilterType::class)
-            ->add("isNonInscrit", BooleanFilterType::class)
-            ->add("sortiePassee", BooleanFilterType::class)
+            ->add("isOrganisateur", CheckboxType::class)
+            ->add("isInscrit", CheckboxType::class)
+            ->add("isNonInscrit", CheckboxType::class)
+            ->add("sortiePassee", CheckboxType::class)
         ;
     }
 
