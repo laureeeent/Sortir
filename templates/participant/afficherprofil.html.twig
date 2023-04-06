@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+<div class="container">
+    <link rel="stylesheet" href="{{ asset('css/profilParticipant.css') }}">
 <p>Prenom :  {{ participant.prenom }}</p>
 <p>Nom :  {{ participant.nom }}</p>
 <p>Telephone :  {{ participant.telephone }}</p>
@@ -14,7 +17,9 @@
     {% endif %}
 </div>
     <button><a href="{{ path('sortie_list') }}" style="text-decoration: none">Retour</a></button>
+</div>
 {% endblock %}
+
 
 {#
 {{ id.photo ? id.photo : default }}#}
