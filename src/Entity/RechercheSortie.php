@@ -16,7 +16,7 @@ class RechercheSortie
 
     private ?bool $isInscrit = false;
 
-    private ?bool $isNonInscrit = true;
+    private ?bool $isNonInscrit = false;
 
     private ?bool $sortiePassee = false;
 
