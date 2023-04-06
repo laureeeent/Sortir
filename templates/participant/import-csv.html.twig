@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(importParticipantsForm)  }}
+    {{ form_widget(importParticipantsForm) }}
+        <button>Ajouter les participants</button>
+    {{ form_end(importParticipantsForm) }}
+    <br>
+    <button ><a href="/admin">Retour au Dashboard</a></button>
+{% endblock %}
