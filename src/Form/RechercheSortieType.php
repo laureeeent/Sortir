@@ -39,10 +39,19 @@ class RechercheSortieType extends AbstractType
                 'mapped' => true,
                 'required'=>false,
             ])
-            ->add("isOrganisateur", CheckboxType::class)
-            ->add("isInscrit", CheckboxType::class)
-            ->add("isNonInscrit", CheckboxType::class)
-            ->add("sortiePassee", CheckboxType::class)
+            ->add("isOrganisateur", CheckboxType::class, [
+                'required' => false,
+
+            ])
+            ->add("isInscrit", CheckboxType::class, [
+                'required' => false
+            ])
+            ->add("isNonInscrit", CheckboxType::class, [
+                "required" => false
+            ])
+            ->add("sortiePassee", CheckboxType::class, [
+                "required" => false
+            ])
         ;
     }
 
