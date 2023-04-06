@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <link rel="stylesheet" href="{{ asset('css/ajoutSortie.css') }}">
     <div class="container">
         {{ form_start(sortieForm) }}
@@ -8,10 +9,17 @@
         <button name="formBouton" value="enregistrer">Enregistrer</button>
         <button name="formBouton" value="publier">Publier</button>
         {{ form_end(sortieForm) }}
-        <button>ajouter un lieu</button>
+    <button id="bouton_ajout_lieu">ajouter un lieu</button>
     </div>
+    
     <script>
+        $add_lieu = false;
 
+        $("#bouton_ajout_lieu").click( function () {
+            let formulaire_sortie = document.getElementById("sortie").parentNode;
+            let input_nom_lieu = document.createElement("textarea");
+            formulaire_sortie.appendChild(input_nom_lieu);
+        })
 
         $('#sortie_ville').change(function () {
             let idVille = document.getElementById('sortie_ville').value;
@@ -33,6 +41,8 @@
                 }
             });
         });
+
+        $
     </script>
 {% endblock %}
 

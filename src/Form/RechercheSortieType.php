@@ -42,6 +42,7 @@ class RechercheSortieType extends AbstractType
                 'mapped' => true,
                 'required'=>false,
             ])
+
             ->add("isOrganisateur", CheckboxType::class,[
                 'label'=> 'Sorties dont je suis l\'organisateur/trice',
                 'required'=> false
