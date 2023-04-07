@@ -85,7 +85,7 @@ class ParticipantController extends AbstractController
 
             $entityManager->persist($participant);
             $entityManager->flush();
-            return $this->redirectToRoute('app_participant');
+            return $this->redirectToRoute('sortie_list');
         }
         return $this->render('participant/profil.html.twig',
             compact('participantForm','participant')
