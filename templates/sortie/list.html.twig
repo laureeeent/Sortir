@@ -11,7 +11,8 @@
             <button>Rechercher</button>
             {{ form_end(rechercheForm) }}
         </div>
-            <div id="sorties">
+        <div id="sorties">
+            <table class="table-scroll">
                 <ul>
                     {% for sortie in sorties %}
                         {% if not (sortie.etat.libelle == "Archivée") %}
@@ -27,7 +28,8 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-            </div>
+            </table>
+        </div>
     </div>
 {% endblock %}
 

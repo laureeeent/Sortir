@@ -50,3 +50,44 @@ input[type=submit] {
 }
 
 
+
+ #sorties {
+     margin-top: 5em;
+
+
+     font-family: Arial, Helvetica, sans-serif;
+     border-collapse: collapse;
+     width: 70%;
+ }
+
+#sorties ul, #sorties li {
+    border: 1px solid #cccccc;
+    padding: 8px;
+    list-style-type: none;
+}
+
+#sorties li:nth-child(even){background-color: #e3e3e3;}
+
+#sorties ul:hover {background-color: #f2f2f2;}
+
+#sorties li {
+
+    justify-items: center;
+    align-items: center;
+    background-color: #d5d5d5;
+    color: #000000;
+}
+
+#sorties {
+    display: inline-block;
+    height: 20em;
+    overflow-y: scroll;
+}
+.table-scroll thead li {
+    position: sticky;
+    top: 0;
+}
+.table-scroll tfoot ul {
+    position: sticky;
+    bottom: 0;
+}
