@@ -1,0 +1,10 @@
+.profil-autre-utilisateur{
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+.btn{
+    margin-top: 1em;
+}

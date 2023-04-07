@@ -1,20 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<p>Prenom :  {{ participant.prenom }}</p>
-<p>Nom :  {{ participant.nom }}</p>
-<p>Telephone :  {{ participant.telephone }}</p>
-<p>Email :  {{ participant.email }}</p>
-<p>Campus :  {{ participant.campus.nom }}</p>
-<div id="photoprofil">
-    {% if participant.photo %}
-        <img src=" {{ asset("photoprofil/"~participant.photo.photoprofil )}} " >
-    {% else %}
-        <img src=" {{ asset("photoprofil/default.png" )}} " >
-    {% endif %}
-</div>
-    <button><a href="{{ path('sortie_list') }}" style="text-decoration: none">Retour</a></button>
+    <link rel="stylesheet" href="{{ asset('css/profilAutreUtilisateur.css') }}">
+    <div class="profil-autre-utilisateur">
+        <p>Prenom : {{ participant.prenom }}</p>
+        <p>Nom : {{ participant.nom }}</p>
+        <p>Telephone : {{ participant.telephone }}</p>
+        <p>Email : {{ participant.email }}</p>
+        <p>Campus : {{ participant.campus.nom }}</p>
+        <div id="photoprofil">
+            {% if participant.photo %}
+                <img src=" {{ asset("photoprofil/"~participant.photo.photoprofil ) }} ">
+            {% else %}
+                <img src=" {{ asset("photoprofil/default.png" ) }} ">
+            {% endif %}
+        </div>
+        <button class="btn"><a href="{{ path('sortie_list') }}" style="text-decoration: none">Retour</a></button>
+    </div>
 {% endblock %}
 
 {#
-{{ id.photo ? id.photo : default }}#}
+{{ id.photo ? id.photo : default }} #}
