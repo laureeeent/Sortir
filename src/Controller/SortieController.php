@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\RechercheSortie;
 use App\Entity\Sortie;
@@ -51,6 +52,9 @@ class SortieController extends AbstractController
     ): Response
     {
         $sortie = new Sortie();
+        $lieu = new Lieu();
+
+        $lieuRepository = $entityManager->getRepository(Lieu::class);
 
         $participant = $entityManager->find(Participant::class, $this->getUser()->getId());
         $etatCree = $etatRepository->findOneBy(['libelle' => 'Créée']);
@@ -60,7 +64,17 @@ class SortieController extends AbstractController
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             try {
-
+                if ($request->get("input_nom_lieu") !== "") {
+                    $lieu->setNom($request->get("input_nom_lieu"));
+                    $lieu->setRue($request->get("input_rue_lieu"));
+                    $lieu->setVille($entityManager->find(Ville::class, $request->get("sortie_ville")));
+                    $lieu->setLatitude($request->get("input_lat_lieu"));
+                    $lieu->setLongitude($request->get("input_long_lieu"));
+                    $entityManager->persist($lieu);
+                    $entityManager->flush();
+                    $lieu = $lieuRepository->findOneBy(["nom" => $lieu->getNom()]);
+                    $sortie->setLieu($lieu);
+                }
                 $request->get("formBouton") === "enregistrer" ? $sortie->setEtat($etatCree) : $sortie->setEtat($etatOuverte);
                 $sortie->setOrganisateur($participant);
                 $sortie->setCampusOrganisateur($participant->getCampus());
@@ -68,6 +82,7 @@ class SortieController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('succes', 'La sortie a bien été insérée');
                 return $this->redirectToRoute('sortie_list');
+
             } catch (\Exception $exception) {
                 $this->addFlash('echec', 'La sortie n\'a pas été insérée');
                 //changer la route et remettre '/'
