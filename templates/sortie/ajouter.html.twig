@@ -6,19 +6,70 @@
     <div class="container">
         {{ form_start(sortieForm) }}
         {{ form_widget(sortieForm) }}
+        <div id="nouveau_lieu_div"></div>
         <button name="formBouton" value="enregistrer">Enregistrer</button>
         <button name="formBouton" value="publier">Publier</button>
         {{ form_end(sortieForm) }}
-    <button id="bouton_ajout_lieu">ajouter un lieu</button>
+        <button id="bouton_ajout_lieu">ajouter un lieu</button>
+
+
     </div>
     
     <script>
-        $add_lieu = false;
+        let add_lieu = false;
 
         $("#bouton_ajout_lieu").click( function () {
-            let formulaire_sortie = document.getElementById("sortie").parentNode;
-            let input_nom_lieu = document.createElement("textarea");
-            formulaire_sortie.appendChild(input_nom_lieu);
+            add_lieu = !add_lieu;
+            let div_nouveau_lieu= document.getElementById("nouveau_lieu_div");
+            if (add_lieu === true) {
+
+                let labelnom = document.createElement("label");
+                labelnom.innerHTML = "Nom : ";
+                let input_nom_lieu = document.createElement("input");
+                input_nom_lieu.required = true;
+                input_nom_lieu.id = "input_nom_lieu";
+                input_nom_lieu.setAttribute("type", "text");
+                let labelrue = document.createElement("label");
+                labelrue.innerHTML = "Rue : ";
+                let input_rue_lieu = document.createElement("input");
+                input_rue_lieu.required = true;
+                input_rue_lieu.id = "input_rue_lieu";
+                input_rue_lieu.setAttribute("type", "text");
+                let labellat = document.createElement("label");
+                labellat.innerHTML = "Latitude : ";
+                let input_latitude_lieu = document.createElement("input");
+                input_latitude_lieu.required = true;
+                input_latitude_lieu.setAttribute("type", "number");
+                input_latitude_lieu.id = "input_latitude_lieu";
+                let labellong = document.createElement("label");
+                labellong.innerHTML = "Long : ";
+                let input_longitude_lieu = document.createElement("input");
+                input_longitude_lieu.setAttribute("type", "number");
+                input_longitude_lieu.required = true;
+                input_longitude_lieu.id = "input_longitude_lieu";
+
+
+                div_nouveau_lieu.appendChild(labelnom);
+                div_nouveau_lieu.appendChild(input_nom_lieu);
+                let lineBreak = document.createElement('BR');
+                div_nouveau_lieu.appendChild(lineBreak);
+                div_nouveau_lieu.appendChild(labelrue);
+                div_nouveau_lieu.appendChild(input_rue_lieu);
+                lineBreak = document.createElement('BR');
+                div_nouveau_lieu.appendChild(lineBreak);
+                div_nouveau_lieu.appendChild(labellat);
+                div_nouveau_lieu.appendChild(input_latitude_lieu);
+                lineBreak = document.createElement('BR');
+                div_nouveau_lieu.appendChild(lineBreak);
+                div_nouveau_lieu.appendChild(labellong);
+                div_nouveau_lieu.appendChild(input_longitude_lieu);
+                lineBreak = document.createElement('BR');
+                div_nouveau_lieu.appendChild(lineBreak);
+
+            }
+            else {
+                div_nouveau_lieu.innerHTML = "";
+            }
         })
 
         $('#sortie_ville').change(function () {
