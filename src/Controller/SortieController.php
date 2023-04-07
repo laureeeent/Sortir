@@ -64,17 +64,17 @@ class SortieController extends AbstractController
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             try {
-                if ($request->get("input_nom_lieu") !== "") {
-                    $lieu->setNom($request->get("input_nom_lieu"));
-                    $lieu->setRue($request->get("input_rue_lieu"));
-                    $lieu->setVille($entityManager->find(Ville::class, $request->get("sortie_ville")));
-                    $lieu->setLatitude($request->get("input_lat_lieu"));
-                    $lieu->setLongitude($request->get("input_long_lieu"));
-                    $entityManager->persist($lieu);
-                    $entityManager->flush();
-                    $lieu = $lieuRepository->findOneBy(["nom" => $lieu->getNom()]);
-                    $sortie->setLieu($lieu);
-                }
+//                if ($request->get("input_nom_lieu") !== "") {
+//                    $lieu->setNom($request->get("input_nom_lieu"));
+//                    $lieu->setRue($request->get("input_rue_lieu"));
+//                    $lieu->setVille($entityManager->find(Ville::class, $request->get("sortie_ville")));
+//                    $lieu->setLatitude($request->get("input_lat_lieu"));
+//                    $lieu->setLongitude($request->get("input_long_lieu"));
+//                    $entityManager->persist($lieu);
+//                    $entityManager->flush();
+//                    $lieu = $lieuRepository->findOneBy(["nom" => $lieu->getNom()]);
+//                    $sortie->setLieu($lieu);
+//                }
                 $request->get("formBouton") === "enregistrer" ? $sortie->setEtat($etatCree) : $sortie->setEtat($etatOuverte);
                 $sortie->setOrganisateur($participant);
                 $sortie->setCampusOrganisateur($participant->getCampus());

@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+    <link rel="stylesheet" href="{{ asset('css/ajoutSortie.css') }}">
     {{ form_start(sortieForm) }}
     {{ form_widget(sortieForm) }}
     <button name="formBouton" value="enregistrer">Enregistrer</button>
